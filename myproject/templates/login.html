@@ -1,7 +1,10 @@
 {% extends 'base.html' %}
 
 {% block body %}
-
+<p>
+    <a href="/entry" style="color:#FFFFFF;">HOME</a>
+    <a href="/contact" style="color:#FFFFFF;">CONTACT</a>
+</p>
 <h2>{{ the_title }}</h2>
 
 <form method="post" action="/identificado">
@@ -12,6 +15,6 @@
         <tr><td>Usuario:</td><td><input name="usuario" type="TEXT" width="60"></td></tr>
         <tr><td>Contraseña:</td><td><input name="contraseña" type="TEXT" width="60"></td></tr>
     </table>
-    <p><input value="LOG IN" type="SUBMIT"></p>
+    <p><input value="INICIAR SESIÓN" type="SUBMIT"></p>
     </form>
 {% endblock %}

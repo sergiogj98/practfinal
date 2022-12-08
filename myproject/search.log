@@ -4,3 +4,4 @@ ImmutableMultiDict([('phrase', 'holita'), ('letters', 'aeiou')])|127.0.0.1|Mozil
 ImmutableMultiDict([('phrase', 'holita'), ('letters', 'aeiou')])|127.0.0.1|Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36 Edg/108.0.1462.42|{'o', 'i', 'a'}
 ImmutableMultiDict([('phrase', 'hlita'), ('letters', 'aeiou')])|127.0.0.1|Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36 Edg/108.0.1462.42|{'i', 'a'}
 ImmutableMultiDict([('phrase', 'holi'), ('letters', 'aeiou')])|127.0.0.1|Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36 Edg/108.0.1462.42|{'o', 'i'}
+ImmutableMultiDict([('phrase', 'holita'), ('letters', 'aeiou')])|127.0.0.1|Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36 Edg/108.0.1462.42|{'a', 'o', 'i'}
