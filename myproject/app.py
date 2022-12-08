@@ -1,5 +1,7 @@
 from flask import Flask, render_template, request, redirect,request, escape
 from search4web import search4letters, log_request
+import time
+
 app = Flask(__name__)
 @app.route('/')
 def hello() -> '302':
@@ -7,7 +9,24 @@ def hello() -> '302':
 
 @app.route('/entry')
 def entry_page() -> 'html':
-    return render_template('entry.html', the_title='Welcome to search for letters on the web!')
+    return render_template('entry.html', the_title='Bienvenido a la WebApp de Sergio Guillén',hora=time.strftime("%A %d de %B de %Y, %H:%M:%S"))
+
+@app.route('/new',methods=['POST'])
+def new_page() -> 'html':
+    return render_template('new.html', the_title='Bienvenido Usuario Nuevo')
+
+@app.route('/login',methods=['POST'])
+def login_page() -> 'html':
+    return render_template('login.html', the_title='Bienvenido, Identifíquese')
+
+@app.route('/anonimous',methods=['POST'])
+def anonimous_page() -> 'html':
+    return render_template('anonimous.html', the_title='Bienvenido Usuario Anonimo')
+
+@app.route('/identificado', methods=['POST'])
+def identificado_page() -> 'html':
+    usuario = request.form['usuario']
+    return render_template('identificado.html', usuario=usuario)
 
 @app.route('/search', methods=['POST'])
 def do_search() -> str:
