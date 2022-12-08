@@ -1,7 +1,7 @@
 body {
     font-family: Verdana, Geneva, Arial, sans-serif;
     font-size: medium;
-    background-color: mediumaquamarine;
+    background-color: #6b1515;
     margin: 5% 10%;
     border: 1px dotted gray;
     padding: 10px 10px 10px 10px;
@@ -12,12 +12,17 @@ a {
     font-weight: 600;
 }
 
-a:hover {
-    text-decoration: underline;
-}
+    a:hover {
+        text-decoration: underline;
+    }
 
-a img {
-    border: 0;
+    a img {
+        border: 0;
+    }
+
+img {
+    display: block;
+    margin: auto;
 }
 
 h2 {
