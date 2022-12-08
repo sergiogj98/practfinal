@@ -1,7 +1,7 @@
 body {
     font-family: Verdana, Geneva, Arial, sans-serif;
     font-size: medium;
-    background-color: #6b1515;
+    background-color: #CDADAD;
     margin: 5% 10%;
     border: 1px dotted gray;
     padding: 10px 10px 10px 10px;
@@ -24,7 +24,6 @@ img {
     display: block;
     margin: auto;
 }
-
 h2 {
     font-size: 150%;
 }

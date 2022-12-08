@@ -2,20 +2,19 @@
 
 {% block body %}
 <p>
-    <a href="/identificado" style="color:#FFFFFF;">HOME</a>
-    <a href="/entry" style="color:#FFFFFF;">LOG OUT</a>
+    <a href="/entry" style="color:#FFFFFF;">HOME</a>
     <a href="/contact" style="color:#FFFFFF;">CONTACT</a>
 </p>
 <h2>{{ the_title }}</h2>
 
-<p>You submitted the following data:</p>
+<p>Has introducido los siguientes parámetros:</p>
 <table>
-    <tr><td>Phrase:</td><td>{{ the_phrase }}</td></tr>
-    <tr><td>Letters:</td><td>{{ the_letters }}</td></tr>
+    <tr><td>Frase:</td><td>{{ the_phrase }}</td></tr>
+    <tr><td>Letras:</td><td>{{ the_letters }}</td></tr>
 </table>
 
-<p>When "{{ the_phrase }}" is search for "{{ the_letters }}",
-    the following results are founded:</p>
+<p>Cuando se busca en "{{ the_phrase }}" las letras "{{ the_letters }}",
+    se obtienen los siguientes resultados:</p>
 <h3>{{ the_results }}</h3>
 
 {% endblock %}

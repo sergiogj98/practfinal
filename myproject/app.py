@@ -32,10 +32,14 @@ def identificado_page() -> 'html':
 def do_search() -> str:
     phrase = request.form['phrase']
     letters = request.form['letters']
-    title = 'Here are you results: '
+    title = 'Aquí están tus resultados'
     result = str(search4letters(phrase, letters))
     log_request(request, result)
-    return render_template('results.html', the_title=title,the_phrase=phrase, the_letters=letters, the_results=result)
+    return render_template('results.html',the_title=title,the_phrase=phrase, the_letters=letters, the_results=result)
+
+@app.route('/contact')
+def contact_page() -> 'html':
+    return render_template('contact.html')
 
 @app.route('/viewlog')
 def view_the_log() -> str:
