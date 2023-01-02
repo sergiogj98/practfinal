@@ -1,3 +1,5 @@
+import re
+from collections import Counter
 def search4vowels(word: str) -> set:
     """ Return any vowels found in word"""
     vowels = set('aeiou')
@@ -10,23 +12,27 @@ def search4letters(phrase: str, letters: str = 'aeiou') -> set:
 
 def search4letters_upgrade(phrase: str, letters: str = 'aeiou') -> set:
     """ Return any letters found in phrase """
-    phrases=phrase.split(".")
+    phrases=re.split('\W+',phrase)
     rst=[]
     phra=[]
     results=[]
+    statistics=[]
     for phr in phrases:
         if phr != "":
             phra.append(phr)
             rst.append(set(letters).intersection(set(phr)))
     results.append(phra)
     results.append(rst)
-
-    print(results)
-    return results
+    statis=contarElementosLista(phra)
+    return results,statis
 
 def log_request(req: 'flask_request', res: str) -> None:
     """ logger for web operations """
     with open('search.log','a') as log:
         print(req.form, req.remote_addr, req.user_agent, res, file=log, sep='|')
 
-
+def contarElementosLista(lista):
+    counter=Counter(lista)
+    first, second, third, *_ = counter.most_common()
+    statis=[first,second,third]
+    return statis

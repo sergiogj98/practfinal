@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect,request, escape
-from search4web import search4letters, log_request
+from search4web import search4letters_upgrade, log_request
 import time
 
 app = Flask(__name__)
@@ -33,9 +33,10 @@ def do_search() -> str:
     phrase = request.form['phrase']
     letters = request.form['letters']
     title = 'Aquí están tus resultados'
-    result = str(search4letters(phrase, letters))
+    result,statis= search4letters_upgrade(phrase, letters)
+    result=str(result)
     log_request(request, result)
-    return render_template('results.html',the_title=title,the_phrase=phrase, the_letters=letters, the_results=result)
+    return render_template('results.html',the_title=title,the_phrase=phrase, the_letters=letters, the_results=result,statistics=statis)
 
 @app.route('/contact')
 def contact_page() -> 'html':
