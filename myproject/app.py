@@ -47,6 +47,10 @@ def view_the_log() -> str:
         contents = log.read()
         return escape(contents)
 
+@app.route('/statistics',methods=['POST'])
+def statistics_page() -> 'html':
+    return render_template('statistics.html', the_title='ESTADISTICAS')
+
 if __name__  == '__main__':
     app.run()
 
