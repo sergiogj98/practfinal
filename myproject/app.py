@@ -21,7 +21,8 @@ def login_page() -> 'html':
 
 @app.route('/anonimous',methods=['POST'])
 def anonimous_page() -> 'html':
-    return render_template('anonimous.html', the_title='Bienvenido Usuario Anonimo')
+    usuario = "anonymous"
+    return render_template('anonimous.html', the_title='Bienvenido Usuario Anonimo',the_user=usuario)
 
 @app.route('/identificado', methods=['POST'])
 def identificado_page() -> 'html':
