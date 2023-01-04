@@ -130,6 +130,46 @@ def identificado_page() -> 'html':
         else:
             return render_template('login.html',the_title='Lo sentimos, el usuario y/o contraseñas introducidas no coinciden. Por favor, pruebe a introducirlas de nuevo.')
 
+@app.route('/identificado2', methods=['POST'])
+def identificado2_page() -> 'html':
+    usuario = request.form['usuario']
+    password = request.form['password']
+    with UseDatabase(dbconfig) as cursor:
+        _SQL = """select id from user where username = %s and password = %s"""
+        cursor.execute(_SQL, (usuario,password))
+        res = cursor.fetchall()
+        if res!=[]: #HA ENCONTRADO AL USUARIO
+            with UseDatabase(dbconfig) as cursor:
+                _SQL = """select n_visits from visits where user = %s"""
+                cursor.execute(_SQL, (usuario,))
+                res = cursor.fetchall()
+                if (res == []):  # TODAVIA ESE USUARIO AUN NO HA VISITADO LA WEB
+                    with UseDatabase(dbconfig) as cursor:
+                        _SQL = """insert into visits (user,n_visits) values (%s,'1')"""
+                        cursor.execute(_SQL, (usuario,))
+                        res = cursor.fetchall()
+                else:
+                    with UseDatabase(dbconfig) as cursor:
+                        _SQL = """select n_visits from visits where user=%s"""
+                        cursor.execute(_SQL, (usuario,))
+                        res = cursor.fetchall()
+
+                    count = res[0][0]
+                    count += 1
+
+                    with UseDatabase(dbconfig) as cursor:
+                        _SQL = """update visits SET n_visits = %s where user = %s"""
+                        cursor.execute(_SQL, (count,usuario))
+                        res = cursor.fetchall()
+
+                    with UseDatabase(dbconfig) as cursor:
+                        _SQL = """insert into log (ts,phrase,letters,ip,browser_string,results,user) values ('2017-07-23 00:00:00','','','','','',%s)"""
+                        cursor.execute(_SQL, (usuario,))
+                        res = cursor.fetchall()
+
+            return render_template('identificado2.html', usuario=usuario)
+        else:
+            return render_template('login.html',the_title='Lo sentimos, el usuario y/o contraseñas introducidas no coinciden. Por favor, pruebe a introducirlas de nuevo.')
 
 @app.route('/search', methods=['POST'])
 def do_search() -> str:

@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<p>
+    <a href="/entry" style="color:#FFFFFF;">LOG OUT</a>
+    <a href="/contact" style="color:#FFFFFF;">CONTACT</a>
+</p>
+<h2>Bienvenido {{ usuario }}</h2>
+<p><strong>Esta es su primera visita!!</strong></p>
+
+<form method="post" action="/search">
+    <table>
+        <p>
+            Introduzca a continuación la/s frase/s y conjunto de letras que desea buscar. Si pretende introducir varias frases sepárelas por un punto (.). Si desea buscar varios conjunto de letras en cada frase, sepárelas por una coma (,):
+        </p>
+        <tr><td>Frases:</td><td><input name="phrase" type="TEXT" width="60"></td></tr>
+        <tr><td>Letras:</td><td><input name="letters" type="TEXT" value="aeiou"></td></tr>
+    </table>
+    <p>Cuando esté listo, haga click en el botón:</p>
+    <p><input value="START" type="SUBMIT"></p>
+    </form>
+{% endblock %}
