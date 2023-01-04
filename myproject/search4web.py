@@ -15,15 +15,18 @@ def search4letters_upgrade(phrase: str, letters: str = 'aeiou') -> set:
     words=re.split('\W+',phrase)
     statis = contarElementosLista(words)
 
+    letras= letters.split(sep=',')
+
     phrases = phrase.split(sep='.')
     rst=[]
     phra=[]
     results=[]
     statistics=[]
     for phr in phrases:
-        if phr != "":
-            phra.append(phr)
-            rst.append(set(letters).intersection(set(phr)))
+        for let in letras:
+            if phr != "":
+                phra.append(phr)
+                rst.append(set(let).intersection(set(phr)))
     results.append(phra)
     results.append(rst)
 
