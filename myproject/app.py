@@ -1,6 +1,12 @@
 from flask import Flask, render_template, request, redirect,request, escape
 from search4web import search4letters_upgrade, log_request
 import time
+from DBcm import UseDatabase, CredentialsError, ConnectionError, SQLError
+
+dbconfig = { 'host': '127.0.0.1',
+'user': 'root',
+'password': 'SergioGJ123&',
+'database': 'search_log', }
 
 app = Flask(__name__)
 @app.route('/')
@@ -21,8 +27,36 @@ def login_page() -> 'html':
 
 @app.route('/anonimous',methods=['POST'])
 def anonimous_page() -> 'html':
-    usuario = "anonymous"
-    return render_template('anonimous.html', the_title='Bienvenido Usuario Anonimo',the_user=usuario)
+    with UseDatabase(dbconfig) as cursor:
+        _SQL = """select * from visits"""
+        cursor.execute(_SQL)
+        res = cursor.fetchall()
+        if(res==[]): #TODAVIA NO HA HABIDO NINGUNA VISITA
+            with UseDatabase(dbconfig) as cursor:
+                _SQL = """insert into visits (user,n_visits) values ('anonymous','1')"""
+                cursor.execute(_SQL)
+                res = cursor.fetchall()
+        else:
+            with UseDatabase(dbconfig) as cursor:
+                _SQL = """select n_visits from visits where user='anonymous'"""
+                cursor.execute(_SQL)
+                res = cursor.fetchall()
+
+            count = res[0][0]
+            count += 1
+
+            with UseDatabase(dbconfig) as cursor:
+                _SQL = """update visits SET n_visits = %s where user = 'anonymous'"""
+                cursor.execute(_SQL, (count,))
+                res = cursor.fetchall()
+        with UseDatabase(dbconfig) as cursor:
+            _SQL = """select * from visits"""
+            cursor.execute(_SQL)
+            res = cursor.fetchall()
+        print(res)
+
+
+    return render_template('anonimous.html', the_title='Bienvenido Usuario Anonimo')
 
 @app.route('/identificado', methods=['POST'])
 def identificado_page() -> 'html':
