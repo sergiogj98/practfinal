@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect,request, escape
 from search4web import search4letters_upgrade, log_request
 import time
+from datetime import datetime
 from DBcm import UseDatabase, CredentialsError, ConnectionError, SQLError
 
 dbconfig = { 'host': '127.0.0.1',
@@ -72,7 +73,11 @@ def anonimous_page() -> 'html':
                 cursor.execute(_SQL, (count,))
                 res = cursor.fetchall()
 
-    return render_template('anonimous.html', the_title='Bienvenido Usuario Anonimo')
+                _SQL = """insert into log (ts,phrase,letters,ip,browser_string,results,user) values ('2017-07-23 00:00:00','','','','','','anonymous')"""
+                cursor.execute(_SQL)
+                res = cursor.fetchall()
+
+    return render_template('anonimous.html', the_title='Bienvenido Usuario',the_user='anonymous')
 
 @app.route('/identificado', methods=['POST'])
 def identificado_page() -> 'html':
@@ -106,6 +111,10 @@ def identificado_page() -> 'html':
                         cursor.execute(_SQL, (count,usuario))
                         res = cursor.fetchall()
 
+                    with UseDatabase(dbconfig) as cursor:
+                        _SQL = """insert into log (ts,phrase,letters,ip,browser_string,results,user) values ('2017-07-23 00:00:00','','','','','',%s)"""
+                        cursor.execute(_SQL, (usuario,))
+                        res = cursor.fetchall()
             return render_template('identificado.html', usuario=usuario)
         else:
             return render_template('login.html',the_title='Lo sentimos, el usuario y/o contraseñas introducidas no coinciden. Por favor, pruebe a introducirlas de nuevo.')
@@ -116,9 +125,20 @@ def do_search() -> str:
     phrase = request.form['phrase']
     letters = request.form['letters']
     title = 'Aquí están tus resultados'
-    result,statis= search4letters_upgrade(phrase, letters)
-    result=str(result)
+    result, statis = search4letters_upgrade(phrase, letters)
+    result = str(result)
     log_request(request, result)
+
+    with UseDatabase(dbconfig) as cursor:
+        _SQL = """select max(id) from log"""
+        cursor.execute(_SQL)
+        res = cursor.fetchall()
+        max_id = res[0][0]
+
+        _SQL = """update log set ts=%s,phrase=%s,letters=%s,ip=%s,browser_string=%s,results=%s where id=%s"""
+        cursor.execute(_SQL, (str(datetime.now()), phrase, letters, str(request.remote_addr), str(request.user_agent), result, max_id))
+        res = cursor.fetchall()
+
     return render_template('results.html',the_title=title,the_phrase=phrase, the_letters=letters, the_results=result,statistics=statis)
 
 @app.route('/contact')
