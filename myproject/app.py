@@ -23,7 +23,25 @@ def new_page() -> 'html':
 
 @app.route('/login',methods=['POST'])
 def login_page() -> 'html':
-    return render_template('login.html', the_title='Bienvenido, Identifíquese')
+    usuario = request.form['usuario']
+    password = request.form['password']
+    with UseDatabase(dbconfig) as cursor:
+        _SQL = """select username from user"""
+        cursor.execute(_SQL)
+        res = cursor.fetchall()
+        found = 0
+        for i in range(len(res)):
+            print(res[i][0])
+            if (usuario==res[i][0]): # EL USUARIO ESTA EN LA BASE DE DATOS, POR LO QUE NO PUEDE CREAR EL MISMO USUARIO
+                found =1
+    if found==1:
+        return render_template('new.html',the_title='Lo sentimos, el usuario introducido ya se encuentra en la base de datos. Por favor, introduzca un nuevo usuario')
+    else:
+        with UseDatabase(dbconfig) as cursor:
+            _SQL = """insert into user (username,password) values (%s,%s)"""
+            cursor.execute(_SQL, (usuario,password))
+            res = cursor.fetchall()
+        return render_template('login.html', the_title='Usuario creado satisfactoriamente. Por favor, identifíquese')
 
 @app.route('/anonimous',methods=['POST'])
 def anonimous_page() -> 'html':
