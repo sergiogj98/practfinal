@@ -12,7 +12,10 @@ def search4letters(phrase: str, letters: str = 'aeiou') -> set:
 
 def search4letters_upgrade(phrase: str, letters: str = 'aeiou') -> set:
     """ Return any letters found in phrase """
-    phrases=re.split('\W+',phrase)
+    words=re.split('\W+',phrase)
+    statis = contarElementosLista(words)
+
+    phrases = phrase.split(sep='.')
     rst=[]
     phra=[]
     results=[]
@@ -23,7 +26,7 @@ def search4letters_upgrade(phrase: str, letters: str = 'aeiou') -> set:
             rst.append(set(letters).intersection(set(phr)))
     results.append(phra)
     results.append(rst)
-    statis=contarElementosLista(phra)
+
     return results,statis
 
 def log_request(req: 'flask_request', res: str) -> None:
