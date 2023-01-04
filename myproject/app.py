@@ -46,7 +46,7 @@ def login_page() -> 'html':
             _SQL = """insert into user (username,password) values (%s,%s)"""
             cursor.execute(_SQL, (usuario,password))
             res = cursor.fetchall()
-        return render_template('login.html', the_title='Usuario creado satisfactoriamente. Por favor, identifíquese')
+        return render_template('login2.html', the_title='Usuario creado satisfactoriamente. Por favor, identifíquese')
 
 @app.route('/anonimous',methods=['POST'])
 def anonimous_page() -> 'html':
