@@ -115,7 +115,18 @@ def identificado_page() -> 'html':
                         _SQL = """insert into log (ts,phrase,letters,ip,browser_string,results,user) values ('2017-07-23 00:00:00','','','','','',%s)"""
                         cursor.execute(_SQL, (usuario,))
                         res = cursor.fetchall()
-            return render_template('identificado.html', usuario=usuario)
+                    with UseDatabase(dbconfig) as cursor:
+                        _SQL = """select max(ts) from log where user=%s"""
+                        cursor.execute(_SQL, (usuario,))
+                        res = cursor.fetchall()
+                        fecha=res[0][0]
+                    with UseDatabase(dbconfig) as cursor:
+                        _SQL = """select phrase from log where ts=%s"""
+                        cursor.execute(_SQL, (fecha,))
+                        res = cursor.fetchall()
+                        frase=res[0][0]
+
+            return render_template('identificado.html', usuario=usuario, the_visit=count,the_date=fecha, the_phrase=frase)
         else:
             return render_template('login.html',the_title='Lo sentimos, el usuario y/o contraseñas introducidas no coinciden. Por favor, pruebe a introducirlas de nuevo.')
 
