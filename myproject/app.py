@@ -133,7 +133,26 @@ def view_the_log() -> str:
 
 @app.route('/statistics',methods=['POST'])
 def statistics_page() -> 'html':
-    return render_template('statistics.html', the_title='ESTADISTICAS')
+    with UseDatabase(dbconfig) as cursor:
+        _SQL = """select n_visits from visits"""
+        cursor.execute(_SQL)
+        res = cursor.fetchall()
+        count_visit=0
+        for i in range(len(res)):
+            count_visit+=res[i][0]
+
+        _SQL = """select * from user"""
+        cursor.execute(_SQL)
+        res = cursor.fetchall()
+        count_user = len(res)
+
+        _SQL = """select user from visits where n_visits = (select max(n_visits) from visits)"""
+        cursor.execute(_SQL)
+        res = cursor.fetchall()
+        top=res[0][0]
+        print(top)
+
+    return render_template('statistics.html', the_title='ESTADISTICAS',the_user=count_user, the_visit=count_visit, the_top=top)
 
 if __name__  == '__main__':
     app.run()
