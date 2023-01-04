@@ -16,8 +16,8 @@ def search4letters_upgrade(phrase: str, letters: str = 'aeiou') -> set:
     statis = contarElementosLista(words)
 
     letras= letters.split(sep=',')
-
     phrases = phrase.split(sep='.')
+
     rst=[]
     phra=[]
     results=[]
@@ -39,6 +39,17 @@ def log_request(req: 'flask_request', res: str) -> None:
 
 def contarElementosLista(lista):
     counter=Counter(lista)
-    first, second, third, *_ = counter.most_common()
-    statis=[first,second,third]
+    if len(lista)>3 :
+        first, second, third, *_ = counter.most_common()
+        statis = [first, second, third]
+    elif len(lista) == 3:
+        first, second, third= counter.most_common()
+        statis = [first, second, third]
+    elif len(lista)==2:
+        first, second= counter.most_common()
+        statis = [first, second]
+    elif len(lista)==1:
+        first= counter.most_common()
+        statis = [first]
+
     return statis

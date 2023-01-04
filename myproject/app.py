@@ -138,8 +138,10 @@ def do_search() -> str:
         _SQL = """update log set ts=%s,phrase=%s,letters=%s,ip=%s,browser_string=%s,results=%s where id=%s"""
         cursor.execute(_SQL, (str(datetime.now()), phrase, letters, str(request.remote_addr), str(request.user_agent), result, max_id))
         res = cursor.fetchall()
-
-    return render_template('results.html',the_title=title,the_phrase=phrase, the_letters=letters, the_results=result,statistics=statis)
+    if len(statis)==3:
+        return render_template('results.html',the_title=title,the_phrase=phrase, the_letters=letters, the_results=result,statistics=statis)
+    else:
+        return render_template('results1.html',the_title=title,the_phrase=phrase, the_letters=letters, the_results=result)
 
 @app.route('/contact')
 def contact_page() -> 'html':
