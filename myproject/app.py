@@ -21,6 +21,10 @@ def entry_page() -> 'html':
 def new_page() -> 'html':
     return render_template('new.html', the_title='Bienvenido Usuario Nuevo')
 
+@app.route('/login_nw',methods=['POST'])
+def login_nw_page() -> 'html':
+    return render_template('login.html', the_title='Bienvenido, identifíquese por favor')
+
 @app.route('/login',methods=['POST'])
 def login_page() -> 'html':
     usuario = request.form['usuario']
@@ -79,7 +83,16 @@ def anonimous_page() -> 'html':
 @app.route('/identificado', methods=['POST'])
 def identificado_page() -> 'html':
     usuario = request.form['usuario']
-    return render_template('identificado.html', usuario=usuario)
+    password = request.form['password']
+    with UseDatabase(dbconfig) as cursor:
+        _SQL = """select id from user where username = %s and password = %s"""
+        cursor.execute(_SQL, (usuario,password))
+        res = cursor.fetchall()
+        if res!=[]: #HA ENCONTRADO AL USUARIO
+            return render_template('identificado.html', usuario=usuario)
+        else:
+            return render_template('login.html',the_title='Lo sentimos, el usuario y/o contraseñas introducidas no coinciden. Por favor, pruebe a introducirlas de nuevo.')
+
 
 @app.route('/search', methods=['POST'])
 def do_search() -> str:
