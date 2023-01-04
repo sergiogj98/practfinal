@@ -3,7 +3,9 @@ from search4web import search4letters_upgrade, log_request
 import time
 from datetime import datetime
 from DBcm import UseDatabase, CredentialsError, ConnectionError, SQLError
+from googletrans import Translator
 
+trans=Translator()
 dbconfig = { 'host': '127.0.0.1',
 'user': 'root',
 'password': 'SergioGJ123&',
@@ -16,7 +18,22 @@ def hello() -> '302':
 
 @app.route('/entry')
 def entry_page() -> 'html':
-    return render_template('entry.html', the_title='Bienvenido a la WebApp de Sergio Guillén',hora=time.strftime("%A %d de %B de %Y, %H:%M:%S"))
+    day= str(time.strftime("%A %d de %B de %Y, %H:%M:%S"))
+    day=day.split(sep=' ')
+    dia=day[0]
+    days=['Monday','Tuesday','Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+    dias=['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo']
+    inde=days.index(dia)
+    dia=dias[inde]
+    mes=day[3]
+    months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+    meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
+    inde = months.index(mes)
+    mes = meses[inde]
+    day[0]=dia;day[3]=mes
+    day=' '.join(day)
+
+    return render_template('entry.html', the_title='Bienvenido a la WebApp de Sergio Guillén',hora=day)
 
 @app.route('/new',methods=['POST'])
 def new_page() -> 'html':
