@@ -71,12 +71,6 @@ def anonimous_page() -> 'html':
                 _SQL = """update visits SET n_visits = %s where user = 'anonymous'"""
                 cursor.execute(_SQL, (count,))
                 res = cursor.fetchall()
-        with UseDatabase(dbconfig) as cursor:
-            _SQL = """select * from visits"""
-            cursor.execute(_SQL)
-            res = cursor.fetchall()
-        print(res)
-
 
     return render_template('anonimous.html', the_title='Bienvenido Usuario Anonimo')
 
@@ -89,6 +83,29 @@ def identificado_page() -> 'html':
         cursor.execute(_SQL, (usuario,password))
         res = cursor.fetchall()
         if res!=[]: #HA ENCONTRADO AL USUARIO
+            with UseDatabase(dbconfig) as cursor:
+                _SQL = """select n_visits from visits where user = %s"""
+                cursor.execute(_SQL, (usuario,))
+                res = cursor.fetchall()
+                if (res == []):  # TODAVIA ESE USUARIO AUN NO HA VISITADO LA WEB
+                    with UseDatabase(dbconfig) as cursor:
+                        _SQL = """insert into visits (user,n_visits) values (%s,'1')"""
+                        cursor.execute(_SQL, (usuario,))
+                        res = cursor.fetchall()
+                else:
+                    with UseDatabase(dbconfig) as cursor:
+                        _SQL = """select n_visits from visits where user=%s"""
+                        cursor.execute(_SQL, (usuario,))
+                        res = cursor.fetchall()
+
+                    count = res[0][0]
+                    count += 1
+
+                    with UseDatabase(dbconfig) as cursor:
+                        _SQL = """update visits SET n_visits = %s where user = %s"""
+                        cursor.execute(_SQL, (count,usuario))
+                        res = cursor.fetchall()
+
             return render_template('identificado.html', usuario=usuario)
         else:
             return render_template('login.html',the_title='Lo sentimos, el usuario y/o contraseñas introducidas no coinciden. Por favor, pruebe a introducirlas de nuevo.')
