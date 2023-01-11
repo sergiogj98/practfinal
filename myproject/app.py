@@ -53,7 +53,6 @@ def login_page() -> 'html':
         res = cursor.fetchall()
         found = 0
         for i in range(len(res)):
-            print(res[i][0])
             if (usuario==res[i][0]): # EL USUARIO ESTA EN LA BASE DE DATOS, POR LO QUE NO PUEDE CREAR EL MISMO USUARIO
                 found =1
     if found==1:
@@ -240,7 +239,6 @@ def statistics_page() -> 'html':
         cursor.execute(_SQL)
         res = cursor.fetchall()
         top=res[0][0]
-        print(top)
 
     return render_template('statistics.html', the_title='ESTADISTICAS',the_user=count_user, the_visit=count_visit, the_top=top)
 
